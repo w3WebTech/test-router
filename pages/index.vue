@@ -163,7 +163,7 @@
 
         <div class="px-2">
           <div v-if="activeComponent === 'Ledger'">
-            <!-- <ledger /> -->
+            <ledger />
           </div>
           <div v-if="activeComponent === 'Trades'">
             <trades />

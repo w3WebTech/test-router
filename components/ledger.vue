@@ -612,7 +612,7 @@ const d = new Date(date);
 return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 };
 
-initFilters();
+// initFilters();
 const getdata = async () => {
   try {
     const res = await fetch('/sharetable.json');
@@ -623,6 +623,7 @@ const getdata = async () => {
     console.error('Error:', error.message);
   }
 };
+
 
 // Function to filter last 7 days
 const filterLastWeek = async () => {
