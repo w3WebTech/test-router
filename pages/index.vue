@@ -2,7 +2,7 @@
  
   <div>
     <TransitionRoot as="template" :show="sidebarOpen">
-      <Dialog class="relative z-50 lg:hidden" @close="sidebarOpen = false">
+      <Dialog class="relative z-50 lg:hidden" @close="closeSidebar">
         <TransitionChild as="template" enter="transition-opacity ease-linear duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="transition-opacity ease-linear duration-300" leave-from="opacity-100" leave-to="opacity-0">
           <div class="fixed inset-0 bg-gray-900/80" />
         </TransitionChild>
@@ -12,7 +12,7 @@
             <DialogPanel class="relative mr-16 flex w-full max-w-xs flex-1">
               <TransitionChild as="template" enter="ease-in-out duration-300" enter-from="opacity-0" enter-to="opacity-100" leave="ease-in-out duration-300" leave-from="opacity-100" leave-to="opacity-0">
                 <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
-                  <button type="button" class="-m-2.5 p-2.5" @click="sidebarOpen = false">
+                  <button type="button" class="-m-2.5 p-2.5" @click="closeSidebar">
                     <span class="sr-only">Close sidebar</span>
                     <XMarkIcon class="w-6 h-6 text-white" aria-hidden="true" />
                   </button>
@@ -117,11 +117,11 @@
                 </span>
               </MenuButton>
               <transition enter-active-class="transition ease-out duration-100" enter-from-class="transform opacity-0 scale-95" enter-to-class="transform opacity-100 scale-100" leave-active-class="transition ease-in duration-75" leave-from-class="transform opacity-100 scale-100" leave-to-class="transform opacity-0 scale-95">
-                <MenuItems class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                <!-- <MenuItems class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                   <MenuItem v-for="item in userNavigation" :key="item.name" v-slot="{ active }">
                     <a @click="profiledashboard(item)"   :class="[ active ? 'bg-gray-50 outline-none cursor-pointer' : '', 'block px-3 py-1 text-sm/6 text-gray-900']">{{ item.name }}</a>
                   </MenuItem>
-                </MenuItems>
+                </MenuItems> -->
               </transition>
             </Menu>
           </div>
@@ -149,8 +149,9 @@
             <withdraw />
           </div>
           <div class="w-full" v-if="profilepanel">
-            <profile/>
-          </div>
+  <profile />
+</div>
+
    
         </div>
       </main>
@@ -214,17 +215,25 @@ const sidebarOpen = ref(false)
 
 const activeComponent = ref('Ledger')
 const setActive = (component) => {
-activeComponent.value = component
-profilepanel.value=false
+  activeComponent.value = component;
+  profilepanel.value = false; // Reset the profile panel when changing component
+  router.push({ path: component }); // Ensure routing is handled correctly
+}
+const closeSidebar = () => {
+  // Delay or ensure smooth transition before updating the state
+  setTimeout(() => {
+    sidebarOpen.value = false;
+  }, 300); // Match duration of transition
 }
 
 
-const profiledashboard=(item)=>{
-if(item.name=='Your profile'){
-  activeComponent.value=false
-  profilepanel.value=true
+const profiledashboard = (item) => {
+  if (item.name === 'Your profile') {
+    activeComponent.value = null; // Or set it to a default component
+    profilepanel.value = true; // Show profile panel
+  }
 }
-}
+
 
 
 
